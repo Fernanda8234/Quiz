@@ -1,4 +1,4 @@
-package com.example.quiz.telas
+package com.example.quiz.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,13 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quiz.components.Botao
 import com.example.quiz.components.IconJogo
+import com.example.quiz.components.Pergunta
+import com.example.quiz.components.Texto
 
 @Composable
-fun TelaFinalScreen(modifier: Modifier = Modifier, navController: NavController){
+fun TelaResultadoScreen(
+    acertos: Int,
+    total: Int,
+    modifier: Modifier = Modifier,
+    navController: NavController
+){
     Box(
         modifier = modifier
         .background(Color(0xFF00CFFF))
@@ -26,7 +35,6 @@ fun TelaFinalScreen(modifier: Modifier = Modifier, navController: NavController)
         Column(
             modifier = modifier
                 .fillMaxSize(),
-            //.background(Color(0xFFDAC9FF)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
@@ -34,9 +42,28 @@ fun TelaFinalScreen(modifier: Modifier = Modifier, navController: NavController)
 
             Spacer(modifier = Modifier.height(45.dp))
 
+            val mensagem = when (acertos) {
+                0 -> "Poxa... tente de novo!"
+                1 -> "Foi por pouco!"
+                2 -> "Quase perfeito!"
+                else -> "Você é fera! 🔥"
+            }
+
+            Pergunta(texto = mensagem)
+
+            Spacer(modifier = Modifier.height(45.dp))
+
+            Texto(
+                texto = "Você acertou $acertos de $total",
+                tamanho = 20.sp
+            )
+
+            Spacer(modifier = Modifier.height(45.dp))
+
             Botao(
                 texto = "JOGAR NOVAMENTE",
-                color = Color(0xFFFFFF00),
+                color = Color(0xFFFEDF2F),
+                alinhamento = TextAlign.Center,
                 onClick = {navController.navigate("inicio")}
             )
         }
