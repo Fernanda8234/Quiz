@@ -6,8 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -82,24 +82,27 @@ fun Pergunta(
 fun Botao(
     texto: String,
     color: Color,
-    alinhamento: TextAlign,
+    alinhamentoTexto: TextAlign,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
-){
+) {
     Button(
         modifier = Modifier
             .width(275.dp)
             .height(45.dp),
         colors = ButtonDefaults.buttonColors(containerColor = color),
-        onClick = onClick,
+        onClick = {
+            onClick()
+        },
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(2.dp, Color.Black),
-    ){
+    ) {
         Text(
             text = texto,
             color = Color(0xFF000000),
-            textAlign = alinhamento,
-            modifier = Modifier.fillMaxWidth())
+            textAlign = alinhamentoTexto,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -114,7 +117,7 @@ fun Cards(
     Card(
         modifier = modifier
             .fillMaxWidth(0.8f)
-            .fillMaxHeight(0.5f),
+            .height(IntrinsicSize.Min),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
@@ -123,18 +126,21 @@ fun Cards(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = pergunta,
-                color = Color.Black
+                color = Color.Black,
+                textAlign = TextAlign.Start
             )
 
             alternativas.forEach { alternativa ->
                 Botao(
                     texto = alternativa,
                     color = Color.White,
-                    alinhamento = TextAlign.Start,
+                    alinhamentoTexto = TextAlign.Start,
                     onClick = { onClick(alternativa == respostaCorreta) }
                 )
             }

@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     var acertos by remember { mutableStateOf(0) }
+                    var nomeJogador by remember { mutableStateOf("") }
 
                     NavHost(
                         navController = navController,
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     ){
                         composable( route = "inicio" ){
                             acertos = 0
-                            TelaInicialScreen(modifier = Modifier.padding(innerPadding), navController = navController)
+                            TelaInicialScreen(modifier = Modifier.padding(innerPadding), navController = navController, aoConfirmarJogador = { nome -> nomeJogador = nome})
                         }
 
                         composable("quiz") {
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("resultado") {
-                            TelaResultadoScreen(acertos = acertos, total = 3, navController = navController)
+                            TelaResultadoScreen(nomeJogador = nomeJogador, acertos = acertos, total = 3, navController = navController, aoReiniciar = {
+                                nomeJogador = ""
+                            })
                         }
                     }
                 }

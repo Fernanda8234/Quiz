@@ -22,8 +22,10 @@ import com.example.quiz.components.Texto
 
 @Composable
 fun TelaResultadoScreen(
+    nomeJogador: String,
     acertos: Int,
     total: Int,
+    aoReiniciar: () -> Unit,
     modifier: Modifier = Modifier,
     navController: NavController
 ){
@@ -54,7 +56,10 @@ fun TelaResultadoScreen(
             Spacer(modifier = Modifier.height(45.dp))
 
             Texto(
-                texto = "Você acertou $acertos de $total",
+                texto = when {
+                    nomeJogador.isNullOrBlank() -> "Você acertou $acertos de $total"
+                    else -> "Você $nomeJogador acertou $acertos de $total"
+                },
                 tamanho = 20.sp
             )
 
@@ -63,8 +68,11 @@ fun TelaResultadoScreen(
             Botao(
                 texto = "JOGAR NOVAMENTE",
                 color = Color(0xFFFEDF2F),
-                alinhamento = TextAlign.Center,
-                onClick = {navController.navigate("inicio")}
+                alinhamentoTexto = TextAlign.Center,
+                onClick = {
+                    aoReiniciar()
+                    navController.navigate("inicio")
+                }
             )
         }
     }

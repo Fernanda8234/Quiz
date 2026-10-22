@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,8 +26,13 @@ import com.example.quiz.components.Texto
 @Composable
 fun TelaInicialScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    aoConfirmarJogador: (String) -> Unit
 ){
+
+    val outlinedTextFieldValue = remember {
+        mutableStateOf("")
+    }
     Box(
         modifier = modifier
             .background(Color(0xFF00CFFF))
@@ -46,10 +55,31 @@ fun TelaInicialScreen(
 
             Spacer(modifier = Modifier.height(25.dp))
 
+            OutlinedTextField(
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Black,
+                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = Color.White
+                ),
+                value = outlinedTextFieldValue.value,
+                onValueChange = { seuNome: String ->
+                    outlinedTextFieldValue.value = seuNome
+                    aoConfirmarJogador(seuNome)
+                },
+                placeholder = {
+                    Texto(
+                        texto = "Digite seu nome",
+                        tamanho = 16.sp
+                    )
+                }
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
             Botao(
                 texto = "COMEÇAR!",
                 color = Color(0xFFFEDF2F),
-                alinhamento = TextAlign.Center,
+                alinhamentoTexto = TextAlign.Center,
                 onClick = {navController.navigate("quiz")}
             )
         }
