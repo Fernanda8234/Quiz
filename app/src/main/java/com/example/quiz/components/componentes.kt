@@ -20,6 +20,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -114,6 +118,8 @@ fun Cards(
     onClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ){
+    var alternativaSelecionada by remember { mutableStateOf<String?>(null) }
+
     Card(
         modifier = modifier
             .fillMaxWidth(0.8f)
@@ -139,9 +145,17 @@ fun Cards(
             alternativas.forEach { alternativa ->
                 Botao(
                     texto = alternativa,
-                    color = Color.White,
+                    color = when {
+                        alternativaSelecionada == null -> Color.White
+                        alternativa == respostaCorreta -> Color.Green // acertou fica verde
+                        alternativa == alternativaSelecionada -> Color.Red // errou fica vermelho
+                        else -> Color.White
+                    },
                     alinhamentoTexto = TextAlign.Start,
-                    onClick = { onClick(alternativa == respostaCorreta) }
+                    onClick = {
+                        alternativaSelecionada = alternativa // salva qual foi a alternativa clicada
+                        onClick(alternativa == respostaCorreta)
+                    }
                 )
             }
         }
